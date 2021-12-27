@@ -1,0 +1,60 @@
+html {
+    background-color: #1c1c1c;
+    color: white;
+    font-size: 1em;
+}
+
+a:link{ 
+    color: white;
+}
+
+a:visited {
+    color: white;
+}
+
+body {
+    width: 95%;
+    margin: auto;
+}
+
+table {
+    width: 99%;
+}
+
+.rows tr:nth-child(even) {
+    color: white;
+    background-color: grey;
+}
+
+.tables {
+    border: 2px solid white;
+    margin-top: 5%;
+    padding: 2%;
+}
+
+form {
+    font-size: 2em
+}
+
+input, select {
+    height: 3em;
+    width: 65%;
+    font-size: .3em;
+    float: right;
+    background-color: lightgray;
+}
+
+details {
+    display:inline-block
+}
+
+
+@media screen and (max-width: 480px) {
+    form {
+        font-size: 1.5em
+    }
+    
+    details {
+        display:inline-block
+    }
+}
