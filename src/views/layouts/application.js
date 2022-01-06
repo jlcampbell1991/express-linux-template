@@ -6,6 +6,7 @@ module.exports.application = (title, html, url) => {
     <html lang="en">
     <head>
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>New App - ${title}</title>
         <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" />
     </head>
