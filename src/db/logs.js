@@ -1,48 +1,47 @@
 const { v4: uuidv4 } = require('uuid');
 
 exports.default = class {
-    constructor(sql) {
+    constructor(sql, playerId) {
         this.sql = sql
+        this.playerId = playerId
     }
 
-    insert = (log, level) => {
-        const date = new Date()
-        const id = uuidv4()
-        return this.sql`insert into logs (
-            id,
-            level,
-            message,
-            created_at
-        ) values (
-            ${id},
-            ${log.mediumId},
-            ${level},
-            ${log.message},
-            ${date}
-        )`
+    insert = (logs, level) => {
+        const created_at = new Date()
+        const rows = logs.map(message => {
+            const id = uuidv4()
+            return { id, level, message: JSON.stringify(message), created_at }
+        })
+        return this.sql`insert into logs ${ this.sql(rows) }`
     }
 
-    debug = (log) => {
-        console.debug(log)
-        return this.insert(log, "debug")
+    debug = (...logs) => {
+        console.debug(...logs)
+        return this.insert([...logs], "debug")
     }
-    info = (log) => {
-        console.info(log)
-        return this.insert(log, "info")
+    info = (...logs) => {
+        console.info(...logs)
+        return this.insert([...logs], "info")
     }
-    warn = (log) => {
-        console.warn(log)
-        return this.insert(log, "warn")
+    warn = (...logs) => {
+        console.warn(...logs)
+        return this.insert([...logs], "warn")
     }
-    error = (log) => {
-        console.error(log)
-        return this.insert(log, "error")
+    error = (...logs) => {
+        console.error(...logs)
+        return this.insert([...logs], "error")
     }
 
     deleteOld = (daysAgo) => {
         console.log(`Deleting logs that are older than ${daysAgo} days`)
+
         return this.sql`
-        delete from media
-        where created_at < (now() - INTERVAL '${daysAgo} days')`
+        delete from logs
+        where created_at < (now() - INTERVAL '1 days')`
+    }
+
+    selectAll = (offset, limit) => {
+        console.log("Selecting all logs")
+        return this.sql`select * from logs order by created_at desc offset ${offset} limit ${limit}`
     }
 }

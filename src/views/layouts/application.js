@@ -1,6 +1,4 @@
-const appendQuery = require('append-query')
-
-module.exports.application = (title, html, url) => {
+module.exports.application = (title, html) => {
     return `
     <!DOCTYPE html>
     <html lang="en">
@@ -9,6 +7,7 @@ module.exports.application = (title, html, url) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>New App - ${title}</title>
         <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" />
+        <script src="/scripts/common.js"></script>
     </head>
     <h1><a href="/">New App</a></h1>
     <table id='menu'>
