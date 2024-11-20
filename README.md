@@ -1,6 +1,8 @@
 # npm install on Linux
 If you're getting a access error while running `npm install` on linux, run `sudo chmod -R 777 .` in the project folder.
 
+# Creating database
+`createdb -U postgres emailsyncer`
 
 # .env Example
 use `psql --help` "Connection options" for local defaults
@@ -24,21 +26,21 @@ DL_DIR=/Users/joshua.campbell/desktop/downloads
 
 # Setting Up systemd
 ## Create systemd service
-`sudo nano /etc/systemd/system/media-crawler.service`
+`sudo nano /etc/systemd/system/email-syncer.service`
 ```
 [Unit]
-Description=media-crawler
+Description=email-syncer
 
 [Service]
 Type=simple
-User=jamble-campbell
-ExecStart=bash /home/jambel-campbell/Dev/node/media-crawler/start.sh
+User=jcampbell
+ExecStart=bash /home/jcampbell/node/email-syncer/start.sh
 
 [Install]
 WantedBy=multi-user.target
 ```
-`sudo systemctl enable --now media-crawler`
-`sudo journalctl -xfu media-crawler`
+`sudo systemctl enable --now email-syncer`
+`sudo journalctl -xfu email-syncer`
 
 ### Create start bash script
 `sudo nano start.sh`
@@ -46,8 +48,8 @@ WantedBy=multi-user.target
 #! /bin/bash
 source ${HOME}/.bashrc
 
-cd /home/jambel-campbell/Dev/node/new-app
-/home/jambel-campbell/.nvm/versions/node/v16.13.1/bin/npm run all
+cd /home/jcampbell/node/email-syncer
+/usr/bin/npm run all
 ```
 
 `sudo ln -s /home/jambel-campbell/.nvm/versions/node/v16.13.1/bin/node /usr/bin/node`
@@ -57,3 +59,9 @@ NOTE: `whereis node`
 if `Error: getaddrinfo ENOTFOUND db`
 then `service docker stop`
 
+# bash-script
+```
+alias email-syncer-db="psql -d email-syncer -U postgres"
+alias email-syncer-logs="sudo journalctl -xfu email-syncer"
+alias email-syncer="sudo systemctl restart email-syncer && email-syncer-logs"
+```
